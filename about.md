@@ -15,4 +15,4 @@ bake bread and brew beer on occasion.
 
 ### Contact me
 
-[nanderson7@gmail.com](mailto:nanderson7@gmail.com)
+You can find a copy of my [resume on Github](https://github.com/muffins/resume/blob/master/resume_full_cv.pdf), or email me at [nanderson7@gmail.com](mailto:nanderson7@gmail.com).
