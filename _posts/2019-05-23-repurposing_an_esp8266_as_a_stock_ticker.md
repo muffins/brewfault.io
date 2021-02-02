@@ -11,7 +11,7 @@ for some time.
 
 <center>
 
-![Original ESP8266](../images/blog/mitchell_arduino_cropped.jpg "osquery fetcher")
+![Original ESP8266]({{ site.baseurl }}/images/blog/mitchell_arduino_cropped.jpg "osquery fetcher")
 
 </center>
 
@@ -70,9 +70,9 @@ where I ended up:
 
 <center>
 
-![New Stock Ticker](../images/blog/stock_ticker_1.jpg "Arduinio Stock Ticker")
+![New Stock Ticker]({{ site.baseurl }}/images/blog/stock_ticker_1.jpg "Arduinio Stock Ticker")
 
-![That solder job tho.](../images/blog/stock_ticker_2.jpg "Ticker solder job")
+![That solder job tho.]({{ site.baseurl }}/images/blog/stock_ticker_2.jpg "Ticker solder job")
 
 </center>
 
