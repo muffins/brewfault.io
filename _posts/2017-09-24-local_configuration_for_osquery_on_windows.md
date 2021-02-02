@@ -1,11 +1,17 @@
 ---
 layout: post
 title: Local Configuration for osquery on Windows
+comments: true
 ---
 
-I pretty commonly get asked by folks for a generic Windows configuration for osquery, as the example configuration pack in the osquery repository favors posix systems a bit ([Something we're hoping to make better](https://github.com/facebook/osquery/issues/3725)).
+I pretty commonly get asked by folks for a generic Windows configuration for
+osquery, as the example configuration pack in the osquery repository favors
+posix systems a bit ([Something we're hoping to make better](https://github.com/facebook/osquery/issues/3725)).
 
-While the configuration is a core component to what queries one is interested in for their enterprise, we typically perform most of the daemon configuration through the `--flagsfile`. Below is the flags file I typically use with the following config.
+While the configuration is a core component to what queries one is interested
+in for their enterprise, we typically perform most of the daemon configuration
+through the `--flagsfile`. Below is the flags file I typically use with the
+following config.
 
 ```text
 --config_plugin=filesystem

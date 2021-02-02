@@ -1,13 +1,21 @@
 ---
 layout: post
 title: Building and Deploying osquery Extensions on Windows
+comments: true
 ---
 
-Considering extensions on osquery are getting more and more support, I figured I'd throw up this guide for building osquery extensions on Windows in C++, as we're still [working on developing osquery python extensions for Windows](https://github.com/muffins/osquery-python/tree/osquery-python-windows-port). What follows are the build steps for developing Windows C++ extensions in osquery:
+Considering extensions on osquery are getting more and more support, I figured
+I'd throw up this guide for building osquery extensions on Windows in C++, as
+we're still
+[working on developing osquery python extensions for Windows](https://github.com/muffins/osquery-python/tree/osquery-python-windows-port).
+What follows are the build steps for developing Windows C++ extensions in osquery:
 
-First, from within the master osquery repo, drop your extensions implementation file into a subdirectory under `external`. In the below sample I created a new directory for my implemenation files (this is needed) called `extension_test`, and I created a `.cpp` with my code living in this folder:
+First, from within the master osquery repo, drop your extensions implementation
+file into a subdirectory under `external`. In the below sample I created a new
+directory for my implemenation files (this is needed) called `extension_test`,
+and I created a `.cpp` with my code living in this folder:
 
-```cmd
+```shell
 C:\Users\thor\work\repos\osquery [master ≡]
 λ  cat .\external\extension_test\sample_extension.cpp
 // Note 1: Include the sdk.h helper.
@@ -56,9 +64,12 @@ int main(int argc, char* argv[]) {
 }
 ```
 
-We can now make use of the osquery build scripts to generate the Visual Studio solution and also build the sample code for us. The `CMake` logic in our build scripts will automatically build any projects living under `external` so long as they're named `extension_`.
+We can now make use of the osquery build scripts to generate the Visual Studio
+solution and also build the sample code for us. The `CMake` logic in our build
+scripts will automatically build any projects living under `external` so long
+as they're named `extension_`.
 
-```cmd
+```shell
 C:\Users\thor\work\repos\osquery [master ≡]
 λ  .\tools\make-win64-binaries.bat
 --
@@ -95,11 +106,18 @@ Test project C:/Users/thor/work/repos/osquery/build/windows10
 Total Test time (real) = 130.09 sec
 ```
 
-Now that we have our sample extension built we have two options. We can either launch Visual Studio and use this to build our extension project, or if we'd prefer to avoid VS, you can manually invoke `msbuild` to compile the project code for us.
+Now that we have our sample extension built we have two options. We can either
+launch Visual Studio and use this to build our extension project, or if we'd
+prefer to avoid VS, you can manually invoke `msbuild` to compile the project
+code for us.
 
-I recommend just leveraging the Visual Studio route, however for the ambitious below are the instructions for manually invoking. It basically amounts to use a new Powershell commandlet to invoke the `vcvarsall.bat` script (**note** you could also just use a VS Native Build Tools command prompt, but I love my shell ^.^), and then invoking `msbuild` with our project name:
+I recommend just leveraging the Visual Studio route, however for the ambitious
+below are the instructions for manually invoking. It basically amounts to use a
+new Powershell commandlet to invoke the `vcvarsall.bat` script (**note** you
+could also just use a VS Native Build Tools command prompt, but I love my
+shell ^.^), and then invoking `msbuild` with our project name:
 
-```cmd
+```shell
 C:\Users\thor\work\repos\osquery [master ≡]
 λ  cd .\build\windows10\
 
@@ -132,11 +150,16 @@ Copyright (C) Microsoft Corporation. All rights reserved.
   external_extension_test.vcxproj -> C:\Users\thor\work\repos\osquery\build\windows10\external\Release\external_extension_test.ext.exe
 ```
 
-Woot! We now have a `external_extension_test.ext.exe` that'll interoperate with our osquery binaries. Now let's look at how we deploy this extensions to our enterprise and hook it up to an osquery process.
+Woot! We now have a `external_extension_test.ext.exe` that'll interoperate with
+our osquery binaries. Now let's look at how we deploy this extensions to our
+enterprise and hook it up to an osquery process.
 
-To do this one will require a deployment process for shipping the binaries, and also for setting file permissions on extensions. Below I assume you take this step, and just show what's required to get the extension talking to the osquery service on startup:
+To do this one will require a deployment process for shipping the binaries, and
+also for setting file permissions on extensions. Below I assume you take this
+step, and just show what's required to get the extension talking to the osquery
+service on startup:
 
-```cmd
+```shell
 C:\Users\thor\work\repos\osquery [master ≡]
 λ  cp .\build\windows10\external\Release\external_extension_test.ext.exe C:\ProgramData\osquery\extensions\example.exe
 
@@ -224,10 +247,23 @@ Mode                LastWriteTime         Length Name
 
 There's a lot happening up above, let's walk through some of this step-by-step.
 
-First, we copy the extension binary we built earlier to `C:\ProgramData\osquery\extensions` (**Again Note** in your environment it's assumed you'd deploy here using Chef or Puppet). Once the binary is in place, we need to set the proper file permissions to assure the binary will load. To do this we make use of our helper Powershell libraries by 'dot' sourcing the script, and invoking the `Set-DenyWriteAcl` cmdlet with `. .\tools\provision\chocolatey\osquery_utils.ps1`, and then we call the function, `Set-DenyWriteAcl C:\ProgramData\osquery\extensions 'Add'`.
+First, we copy the extension binary we built earlier to
+`C:\ProgramData\osquery\extensions` (**Again Note** in your environment it's
+assumed you'd deploy here using Chef or Puppet). Once the binary is in place,
+we need to set the proper file permissions to assure the binary will load. To
+do this we make use of our helper Powershell libraries by 'dot' sourcing the
+script, and invoking the `Set-DenyWriteAcl` cmdlet with
+`. .\tools\provision\chocolatey\osquery_utils.ps1`, and then we call the
+function, `Set-DenyWriteAcl C:\ProgramData\osquery\extensions 'Add'`.
 
-Now that the binary is in place, we update our osquery flags file to turn on extensions, ensure the full path to our extensions binary is in our autoload file, `C:\ProgramData\osquery\extensions.load`, and then finally ensure we have some scheduled queries setup in `osquery.conf`. If you're using a TLS server for your configuration, you'd simply want to schedule a few queries against your extension there.
+Now that the binary is in place, we update our osquery flags file to turn on
+extensions, ensure the full path to our extensions binary is in our autoload
+file, `C:\ProgramData\osquery\extensions.load`, and then finally ensure we have
+some scheduled queries setup in `osquery.conf`. If you're using a TLS server
+for your configuration, you'd simply want to schedule a few queries against your
+extension there.
 
-Lastly, we turn everything on locally, and verify we're getting logged output into our filesystem logger plugin.
+Lastly, we turn everything on locally, and verify we're getting logged output
+into our filesystem logger plugin.
 
 Happy Hacking!
