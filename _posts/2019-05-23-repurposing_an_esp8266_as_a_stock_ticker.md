@@ -1,6 +1,6 @@
 ---
 layout: post
-title: Building and Deploying osquery Extensions on Windows
+title: Repurposing an ESP8266 as a Stock Ticker
 comments: true
 ---
 
