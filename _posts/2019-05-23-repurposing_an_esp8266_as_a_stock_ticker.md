@@ -9,7 +9,7 @@ purpose was to reach out to the osquery github periodically and get the number
 of open pull requests and issues we had open, which was pretty relevant to me
 for some time.
 
-![Original ESP8266](/images/blog/mitchell_arduino_cropped.jpg)
+![Original ESP8266](https://brewfault.io/images/blog/mitchell_arduino_cropped.jpg)
 
 Lately though I’ve been wondering what else I could do with this little device,
 and being relatively new to the world of Arduino, I decided to set out with a
