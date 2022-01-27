@@ -9,11 +9,7 @@ purpose was to reach out to the osquery github periodically and get the number
 of open pull requests and issues we had open, which was pretty relevant to me
 for some time.
 
-<center>
-
-![Original ESP8266]({{ site.baseurl }}/images/blog/mitchell_arduino_cropped.jpg "osquery fetcher")
-
-</center>
+![Original ESP8266](/images/blog/mitchell_arduino_cropped.jpg)
 
 Lately though I’ve been wondering what else I could do with this little device,
 and being relatively new to the world of Arduino, I decided to set out with a
@@ -68,13 +64,9 @@ While I was moving to the Great Pacific Northwest, the structure of the 3d
 printing on the original board broke, so I had to improvise a bit. Here’s
 where I ended up:
 
-<center>
+![New Stock Ticker](/images/blog/stock_ticker_1.jpg "Arduinio Stock Ticker")
 
-![New Stock Ticker]({{ site.baseurl }}/images/blog/stock_ticker_1.jpg "Arduinio Stock Ticker")
-
-![That solder job tho.]({{ site.baseurl }}/images/blog/stock_ticker_2.jpg "Ticker solder job")
-
-</center>
+![That solder job tho.](/images/blog/stock_ticker_2.jpg "Ticker solder job")
 
 Overall it was a pretty great entry project to Arduino grabbing content from a
 remote endpoint over a TLS connection.
