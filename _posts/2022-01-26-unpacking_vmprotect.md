@@ -77,13 +77,13 @@ While we were able to recover some of the decrypted API calls, there's a lot lef
 2. Break on the function call and the NOP right after, and trace the execution all the way until you jump/return to the API call itself.
 3. I try to slow down my "step into" calls when I get close to a ret or jmp instruction as the API call is resolved and then immediately jumped/returned to after.
 4. Once you've identified the API call continue execution to your NOP-breakpoint and annotate as desired.
-With this methodology, and time, and elbow-grease, and patience, you'll eventually be able to tell the broader story of what the sample is up to.
+   With this methodology, and time, and elbow-grease, and patience, you'll eventually be able to tell the broader story of what the sample is up to.
 
 ## Recap/Tips and Tricks for REing VMProtected Bins
 
-* Try to identify some of the behavior your program may be using from Windows APIs, like CreateThread/RtlExitUserThread or maybe ReadFile/WriteFile or something. Break on these functions and try to trace through the stack frames until you get back into user code, in an attempt to derive the OEP.
-* The IAT found by Scylla initially is probably wrong, and referencing the IAP used by the VMProtect code. You may need to generate a couple of dumps after the program has unpacked a bit more in order to get something working, and this is assuming the sample you're investigating is doing additional obfuscation/encryption on the imports.
-* Identify where VMProtect is doing the function translation. In my sample subroutines being translated looked like a call followed by a single \x90 instruction, and when disassembled with IDA looked like hot garbage. Once found, step-into-debug until you hit the API call itself. This process helped annotate my IDB enough to understand generically what the code was doing.
-* **Honorable Mentions:**
-  * There's a project called vmpdump, which seemed like it would attempt to reconstruct the IAT for you, but I wasn't able to get it running. I took a small stab at fixing up the code, but it seemed like more trouble than it was worth as I didn't have to translate too many imports to get a loose understanding of what the program was doing.
-  * JSB did a mediocre job of identifying some of the programs behaviors, so one might be able to detonate in JSB to identify what API functions might be good candidates for breaking during user-code execution to find OEP.
+- Try to identify some of the behavior your program may be using from Windows APIs, like CreateThread/RtlExitUserThread or maybe ReadFile/WriteFile or something. Break on these functions and try to trace through the stack frames until you get back into user code, in an attempt to derive the OEP.
+- The IAT found by Scylla initially is probably wrong, and referencing the IAP used by the VMProtect code. You may need to generate a couple of dumps after the program has unpacked a bit more in order to get something working, and this is assuming the sample you're investigating is doing additional obfuscation/encryption on the imports.
+- Identify where VMProtect is doing the function translation. In my sample subroutines being translated looked like a call followed by a single \x90 instruction, and when disassembled with IDA looked like hot garbage. Once found, step-into-debug until you hit the API call itself. This process helped annotate my IDB enough to understand generically what the code was doing.
+- **Honorable Mentions:**
+  - There's a project called vmpdump, which seemed like it would attempt to reconstruct the IAT for you, but I wasn't able to get it running. I took a small stab at fixing up the code, but it seemed like more trouble than it was worth as I didn't have to translate too many imports to get a loose understanding of what the program was doing.
+  - JSB did a mediocre job of identifying some of the programs behaviors, so one might be able to detonate in JSB to identify what API functions might be good candidates for breaking during user-code execution to find OEP.
