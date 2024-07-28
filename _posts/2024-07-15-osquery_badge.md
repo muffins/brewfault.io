@@ -62,7 +62,7 @@ with extras so go slow and steady.
 The kit comes with a switch and a JST connector, and maybe even a LiPol battery
 if I had any left. Solder the switch onto the board, and if your battery needs
 a JST connector solder this on as well. If your battery is just a red and black
-wire, solder the wire to the pad closest to the top of the board as so:
+wire, solder the **red wire** to the pad closest to the top of the board as so:
 
 ![Positive Battery Pad](https://brewfault.io/images/osquery-badge/5.jpg)
 
